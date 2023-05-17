@@ -55,7 +55,7 @@
 | Column              | Type       | Options                        |
 | ------------------- | ---------- | ------------------------------ |
 | post_code           | string     | null: false                    |
-| region_of_origin_id | references | null: false                    |
+| region_of_origin_id | integer    | null: false                    |
 | municipality        | string     | null: false                    |
 | address             | string     | null: false                    |
 | building_name       | string     |                                |
