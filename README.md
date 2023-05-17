@@ -2,14 +2,16 @@
 
 ## users テーブル
 
-| Column             | Type   | Options     |
-| ------------------ | ------ | ----------- |
-| nickname           | string | null: false |
-| email              | string | null: false |
-| password           | string | null: false |
-| name               | string | null: false |
-| katakana           | string | null: false |
-| date_of_birth      | string | null: false |
+| Column             | Type   | Options                 |
+| ------------------ | ------ | ----------------------- |
+| nickname           | string | null: false             |
+| email              | string | null: false,unique:true |
+| encrypted_password | string | null: false             |
+| first_name         | string | null: false             |
+| last_name          | string | null: false             |
+| first_katakana     | string | null: false             |
+| last_katakana      | string | null: false             |
+| date_of_birth      | date   | null: false             |
 
 ### Association
 
@@ -19,18 +21,17 @@
 
 ## items テーブル
 
-| Column            | Type   | Options                        |
-| ----------------- | ------ | ------------------------------ |
-| name              | string | null: false                    |
-| image             | text   | null: false                    |
-| user_id           | string | null: false, foreign_key: true |
-| text              | text   | null: false                    |
-| category          | string | null: false                    |
-| situation         | string | null: false                    |
-| shipping_charges  | string | null: false                    |
-| region_of_origin  | string | null: false                    |
-| days_to_ship      | string | null: false                    |
-| price             | string | null: false                    |
+| Column              | Type       | Options                        |
+| ------------------- | ---------- | ------------------------------ |
+| name                | string     | null: false                    |
+| user                | references | null: false, foreign_key: true |
+| text                | text       | null: false                    |
+| category_id         |  integer   | null: false                    |
+| situation_id        | integer    | null: false                    |
+| shipping_charges_id | integer    |  null: false                   |
+| region_of_origin_id | integer    | null: false                    |
+| days_to_ship_id     | integer    | null: false                    |
+| price               | integer    | null: false                    |
 
 ### Association
 
@@ -41,9 +42,6 @@
 
 | Column           | Type   | Options                        |
 | ---------------- | ------ | ------------------------------ |
-| card_information | string | null: false                    |
-| date_of_expiry   | string | null: false                    |
-| security_code    | string | null: false                    |
 | user_id          | string | null: false, foreign_key: true |
 | item_id          | string | null: false, foreign_key: true |
 
