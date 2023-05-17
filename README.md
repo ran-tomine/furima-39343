@@ -36,7 +36,7 @@
 ### Association
 
 - belongs_to :user
-- belongs_to :order
+- has_one :order
 
 ## orders テーブル
 
@@ -56,7 +56,7 @@
 | ------------------- | ---------- | ------------------------------ |
 | post_code           | string     | null: false                    |
 | region_of_origin_id | references | null: false                    |
-| municipality        | references | null: false                    |
+| municipality        | string     | null: false                    |
 | address             | string     | null: false                    |
 | building_name       | string     |                                |
 | telephone_number    | string     | null: false                    |
@@ -64,6 +64,4 @@
 
 ### Association
 
-- belongs_to :room
-- belongs_to :user
 - belongs_to :order
