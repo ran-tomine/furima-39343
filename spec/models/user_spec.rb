@@ -3,15 +3,15 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   before do
     @user = FactoryBot.build(:user)
-    @user.first_name = '太郎'
-    @user.last_name = '山田'
   end
 
   describe 'ユーザー新規登録' do
-    it "nameとemail、passwordとpassword_confirmationが存在すれば登録できる" do
+    context '新規登録できるとき' do
+    it "nicknameとemail、passwordとpassword_confirmation,first_name,last_name、first_katakana、last_katakana、date_of_birthが存在すれば登録できる" do
       expect(@user).to be_valid
     end
-
+    end
+    context '新規登録できないとき' do
     it 'nicknameが空では登録できない' do
       @user.nickname = ''
       @user.valid?
@@ -111,6 +111,6 @@ RSpec.describe User, type: :model do
       @user.valid?
       expect(@user.errors.full_messages).to include("Last katakana 全角文字を使用してください")
     end
-
+  end
   end
 end
