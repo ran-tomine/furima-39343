@@ -116,21 +116,21 @@ RSpec.describe User, type: :model do
       @user.password = 'password' # 英字のみのパスワード
       @user.password_confirmation = 'password'
       @user.valid?
-      expect(@user.errors.full_messages).to include('Password は半角英数字混合で設定してください')
+      expect(@user.errors.full_messages).to include('Password は半角英数字混合で入力してください')
     end
 
     it '数字のみのパスワードでは登録できない' do
       @user.password = '123456' # 数字のみのパスワード
       @user.password_confirmation = '123456'
       @user.valid?
-      expect(@user.errors.full_messages).to include('Password は半角英数字混合で設定してください')
+      expect(@user.errors.full_messages).to include('Password は半角英数字混合で入力してください')
     end
 
       it '全角文字を含むパスワードでは登録できない' do
       @user.password = 'パスワード１２３' # 全角文字を含むパスワード
       @user.password_confirmation = 'パスワード１２３'
       @user.valid?
-      expect(@user.errors.full_messages).to include('Password は半角英数字混合で設定してください')
+      expect(@user.errors.full_messages).to include('Password は半角英数字混合で入力してください')
     end
   end
   end
