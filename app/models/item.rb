@@ -7,7 +7,14 @@ class Item < ApplicationRecord
   validates :shipping_charge_id, numericality: { other_than: 1, message: "can't be blank" }
   validates :region_of_origin_id, numericality: { other_than: 1, message: "can't be blank" }
   validates :day_to_ship_id, numericality: { other_than: 1, message: "can't be blank" }
-  validates :price, presence: true, numericality: { greater_than: 299, less_than_or_equal_to: 9999999, only_integer: true, message: "must be a valid number" }
+  validates :price, presence: true, numericality: {
+    greater_than: 299,
+    less_than_or_equal_to: 9_999_999,
+    only_integer: true,
+    message: "must be a valid number",
+    less_than_or_equal_to: 9_999_999,
+    message: "cannot exceed 9,999,999"
+  }
 
   belongs_to :user
   #has_one :order
