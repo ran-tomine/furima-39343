@@ -64,13 +64,13 @@ RSpec.describe Item, type: :model do
     it "価格の情報が300未満だと商品情報は保存できない" do
       @item.price = 299
       @item.valid?
-      expect(@item.errors.full_messages).to include("Price cannot exceed 9,999,999")
+      expect(@item.errors.full_messages).to include("Price must be a valid number and cannot exceed 9,999,999")
     end
 
     it "価格の情報が数値でないと商品情報は保存できない" do
       @item.price = "invalid"
       @item.valid?
-      expect(@item.errors.full_messages).to include("Price cannot exceed 9,999,999")
+      expect(@item.errors.full_messages).to include("Price must be a valid number and cannot exceed 9,999,999")
     end
     it 'userが紐付いていないと保存できない' do
       @item.user = nil
@@ -80,12 +80,12 @@ RSpec.describe Item, type: :model do
     it "価格が半角数値でない場合、商品情報は保存できない" do
       @item.price = "invalid"
       @item.valid?
-      expect(@item.errors.full_messages).to include("Price cannot exceed 9,999,999")
+      expect(@item.errors.full_messages).to include("Price must be a valid number and cannot exceed 9,999,999")
     end
     it "価格が9,999,999円を超える場合、商品情報は保存できない" do
       @item.price = 10_000_000
       @item.valid?
-      expect(@item.errors.full_messages).to include("Price cannot exceed 9,999,999")
+      expect(@item.errors.full_messages).to include("Price must be a valid number and cannot exceed 9,999,999")
     end
     end
   end

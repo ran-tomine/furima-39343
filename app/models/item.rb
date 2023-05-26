@@ -11,9 +11,7 @@ class Item < ApplicationRecord
     greater_than: 299,
     less_than_or_equal_to: 9_999_999,
     only_integer: true,
-    message: "must be a valid number",
-    less_than_or_equal_to: 9_999_999,
-    message: "cannot exceed 9,999,999"
+    message: "must be a valid number and cannot exceed 9,999,999"
   }
 
   belongs_to :user
