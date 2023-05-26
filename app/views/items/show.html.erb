@@ -4,10 +4,10 @@
 <div class="item-show">
   <div class="item-box">
     <h2 class="name">
-      <%= "商品名" %>
+      <%= @item.name %>
     </h2>
     <div class="item-img-content">
-      <%= image_tag "item-sample.png" ,class:"item-box-img" %>
+      <%= image_tag @item.image.variant(resize: '500x500'), class: "item-img" if @item.image.attached? %>
       <%# 商品が売れている場合は、sold outを表示しましょう %>
       <div class="sold-out">
         <span>Sold Out!!</span>
@@ -16,54 +16,206 @@
     </div>
     <div class="item-price-box">
       <span class="item-price">
-        ¥ 999,999,999
+        <%= "￥" + @item.price.to_s %>
       </span>
       <span class="item-postage">
-        <%= "配送料負担" %>
+       <% if @item.shipping_charge_id == 2 %>
+          送料込み(出品者負担)
+        <% elsif @item.shipping_charge_id == 3 %>
+          着払い(購入者負担)
+        <% end %>
       </span>
     </div>
 
     <%# ログインしているユーザーと出品しているユーザーが、同一人物の場合と同一人物ではない場合で、処理を分けましょう %>
-
-    <%= link_to "商品の編集", "#", method: :get, class: "item-red-btn" %>
+    <% if user_signed_in? && current_user.id == @item.user_id %>
+    <%= link_to "商品の編集", edit_item_path(@item.id), method: :get, class: "item-red-btn" %>
     <p class="or-text">or</p>
-    <%= link_to "削除", "#", method: :delete, class:"item-destroy" %>
-
+    <%= link_to "削除", item_path(@item.id), method: :delete, class:"item-destroy" %>
+    <% elsif user_signed_in? %>
     <%# 商品が売れていない場合はこちらを表示しましょう %>
     <%= link_to "購入画面に進む", "#" ,class:"item-red-btn"%>
     <%# //商品が売れていない場合はこちらを表示しましょう %>
-
-
+    <% else %>
+    <% end %>
     <%# //ログインしているユーザーと出品しているユーザーが、同一人物の場合と同一人物ではない場合で、処理を分けましょう %>
 
     <div class="item-explain-box">
-      <span><%= "商品説明" %></span>
+      <span><%= @item.explanation %></span>
     </div>
     <table class="detail-table">
       <tbody>
         <tr>
           <th class="detail-item">出品者</th>
-          <td class="detail-value"><%= "出品者名" %></td>
+          <td class="detail-value"><%= @item.name %></td>
         </tr>
         <tr>
           <th class="detail-item">カテゴリー</th>
-          <td class="detail-value"><%= "カテゴリー名" %></td>
+          <td class="detail-value">
+          <% if @item.category_id  == 2 %>
+            メンズ
+          <% elsif @item.category_id  == 3 %>
+            レディース
+          <% elsif @item.category_id  == 4 %>
+            ベビー・キッズ
+          <% elsif @item.category_id  == 5 %>
+            インテリア・住まい・小物
+          <% elsif @item.category_id  == 6 %>
+            本・音楽・ゲーム
+          <% elsif @item.category_id  == 8 %>
+            おもちゃ・ホビー・グッズ
+          <% elsif @item.category_id  == 9 %>
+            家電・スマホ・カメラ
+          <% elsif @item.category_id  == 10 %>
+            スポーツ・レジャー
+          <% elsif @item.category_id  == 11 %>
+            ハンドメイド
+          <% elsif @item.category_id  == 12 %>
+            その他
+          <% end %>
+
+          </td>
         </tr>
         <tr>
           <th class="detail-item">商品の状態</th>
-          <td class="detail-value"><%= "商品の状態" %></td>
+          <td class="detail-value">
+          <% if @item.situation_id  == 2 %>
+            新品・未使用
+          <% elsif @item.situation_id  == 3 %>
+            未使用に近い
+          <% elsif @item.situation_id  == 4 %>
+            目立った傷や汚れなし
+          <% elsif @item.situation_id  == 5 %>
+            やや傷や汚れあり
+          <% elsif @item.situation_id  == 6 %>
+            傷や汚れあり
+          <% elsif @item.situation_id  == 7 %>
+            全体的に状態が悪い
+          <% end %>
+          </td>
         </tr>
         <tr>
           <th class="detail-item">配送料の負担</th>
-          <td class="detail-value"><%= "発送料の負担" %></td>
+          <td class="detail-value">
+          <% if @item.shipping_charge_id == 2 %>
+            送料込み(出品者負担)
+          <% elsif @item.shipping_charge_id == 3 %>
+            着払い(購入者負担)
+          <% end %>
+          </td>
         </tr>
         <tr>
           <th class="detail-item">発送元の地域</th>
-          <td class="detail-value"><%= "発送元の地域" %></td>
+          <td class="detail-value">
+          <% if @item.region_of_origin_id  == 2 %>
+            北海道
+          <% elsif @item.region_of_origin_id  == 3 %>
+            青森県
+          <% elsif @item.region_of_origin_id  == 4 %>
+            岩手県
+          <% elsif @item.region_of_origin_id  == 5 %>
+            宮城県
+          <% elsif @item.region_of_origin_id  == 6 %>
+            秋田県
+          <% elsif @item.region_of_origin_id  == 7 %>
+            山形県
+          <% elsif @item.region_of_origin_id  == 8 %>
+            福島県
+          <% elsif @item.region_of_origin_id  == 9 %>
+            茨城県
+          <% elsif @item.region_of_origin_id  == 10 %>
+            栃木県
+          <% elsif @item.region_of_origin_id  == 11 %>
+            群馬県
+            <% elsif @item.region_of_origin_id  == 12 %>
+            埼玉県
+            <% elsif @item.region_of_origin_id  == 13 %>
+            千葉県
+            <% elsif @item.region_of_origin_id  == 14 %>
+            東京都
+            <% elsif @item.region_of_origin_id  == 15 %>
+            神奈川県
+            <% elsif @item.region_of_origin_id  == 16 %>
+            新潟県
+            <% elsif @item.region_of_origin_id  == 17 %>
+            富山県
+            <% elsif @item.region_of_origin_id  == 18 %>
+            石川県
+            <% elsif @item.region_of_origin_id  == 19 %>
+            福井県
+            <% elsif @item.region_of_origin_id  == 20 %>
+            山梨県
+            <% elsif @item.region_of_origin_id  == 21 %>
+            長野県
+            <% elsif @item.region_of_origin_id  == 22 %>
+            岐阜県
+            <% elsif @item.region_of_origin_id  == 23 %>
+            静岡県
+            <% elsif @item.region_of_origin_id  == 24 %>
+            愛知県
+            <% elsif @item.region_of_origin_id  == 25 %>
+            三重県
+            <% elsif @item.region_of_origin_id  == 26 %>
+            滋賀県
+            <% elsif @item.region_of_origin_id  == 27 %>
+            京都府
+            <% elsif @item.region_of_origin_id  == 28 %>
+            大阪府
+            <% elsif @item.region_of_origin_id  == 29 %>
+            兵庫県
+            <% elsif @item.region_of_origin_id  == 30 %>
+            奈良県
+            <% elsif @item.region_of_origin_id  == 31 %>
+            和歌山県
+            <% elsif @item.region_of_origin_id  == 32 %>
+            鳥取県
+            <% elsif @item.region_of_origin_id  == 33 %>
+            島根県
+            <% elsif @item.region_of_origin_id  == 34 %>
+            岡山県
+            <% elsif @item.region_of_origin_id  == 35 %>
+            広島県
+            <% elsif @item.region_of_origin_id  == 36 %>
+            山口県
+            <% elsif @item.region_of_origin_id  == 37 %>
+            徳島県
+            <% elsif @item.region_of_origin_id  == 38 %>
+            香川県
+            <% elsif @item.region_of_origin_id  == 39 %>
+            愛媛県
+            <% elsif @item.region_of_origin_id  == 40 %>
+            高知県
+            <% elsif @item.region_of_origin_id  == 41 %>
+            福岡県
+            <% elsif @item.region_of_origin_id  == 42 %>
+            佐賀県
+            <% elsif @item.region_of_origin_id  == 43 %>
+            長崎県
+            <% elsif @item.region_of_origin_id  == 44 %>
+            熊本県
+            <% elsif @item.region_of_origin_id  == 45 %>
+            大分県
+            <% elsif @item.region_of_origin_id  == 46 %>
+            宮崎県
+            <% elsif @item.region_of_origin_id  == 47 %>
+            鹿児島県
+            <% elsif @item.region_of_origin_id  == 48 %>
+            沖縄県
+            
+            <% end %>
+          </td>
         </tr>
         <tr>
           <th class="detail-item">発送日の目安</th>
-          <td class="detail-value"><%= "発送日の目安" %></td>
+          <td class="detail-value">
+          <% if @item.day_to_ship_id == 2 %>
+            1~2日で発送
+          <% elsif @item.day_to_ship_id == 3 %>
+            2~3日で発送
+          <% elsif @item.day_to_ship_id == 4 %>
+            4~7日で発送
+          <% end %>
+          </td>
         </tr>
       </tbody>
     </table>
