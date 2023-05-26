@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 販売価格の入力フィールドの値が変更されたときに計算を実行するイベントリスナーを追加
   priceInput.addEventListener('input', function() {
     // 販売価格を取得
-    var price = parseFloat(priceInput.value);
+    var price = Math.floor(parseFloat(priceInput.value));
 
     // 手数料と販売利益を計算
     var fee = price * 0.1; // 10%の手数料として仮定

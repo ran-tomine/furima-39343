@@ -7,10 +7,10 @@ class Item < ApplicationRecord
   validates :shipping_charge_id, numericality: { other_than: 1, message: "can't be blank" }
   validates :region_of_origin_id, numericality: { other_than: 1, message: "can't be blank" }
   validates :day_to_ship_id, numericality: { other_than: 1, message: "can't be blank" }
-  validates :price, presence: true, numericality: { greater_than: 0 }
+  validates :price, presence: true, numericality: { greater_than: 299, less_than_or_equal_to: 9999999, only_integer: true, message: "must be a valid number" }
 
   belongs_to :user
-  has_one :order
+  #has_one :order
   has_one_attached :image
 
   extend ActiveHash::Associations::ActiveRecordExtensions

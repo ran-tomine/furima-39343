@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Item, type: :model do
   before do
-    @user = FactoryBot.create(:user)
-    @item = FactoryBot.create(:item, category_id: 2, situation_id: 2, shipping_charge_id: 2, region_of_origin_id: 2, day_to_ship_id: 2)
+    
+    @item = build(:item)
     
   end
 
@@ -31,27 +31,27 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Explanation can't be blank")
       end
       it "カテゴリー情報がないと商品情報は保存できない" do
-        @item.category_id  = nil
+        @item.category_id  = '---'
         @item.valid?
         expect(@item.errors.full_messages).to include("Category must be selected")
       end
       it "商品の状態の情報がないと商品情報は保存できない" do
-        @item.situation_id   = nil
+        @item.situation_id   = '---'
         @item.valid?
         expect(@item.errors.full_messages).to include("Situation can't be blank")
       end
       it "配送料の負担の情報がないと商品情報は保存できない" do
-        @item.shipping_charge_id   = nil
+        @item.shipping_charge_id   = '---'
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping charge can't be blank")
       end
       it "発送元の地域情報がないと商品情報は保存できない" do
-        @item.region_of_origin_id  = nil
+        @item.region_of_origin_id  = '---'
         @item.valid?
         expect(@item.errors.full_messages).to include("Region of origin can't be blank")
       end
       it "発送日までの日数の情報がないと商品情報は保存できない" do
-        @item.day_to_ship_id    = nil
+        @item.day_to_ship_id    = '---'
         @item.valid?
         expect(@item.errors.full_messages).to include("Day to ship can't be blank")
       end     
@@ -61,16 +61,26 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Price can't be blank")
       end
 
-    it "価格の情報が0以下だと商品情報は保存できない" do
-      @item.price = 0
+    it "価格の情報が300未満だと商品情報は保存できない" do
+      @item.price = 299
       @item.valid?
-      expect(@item.errors.full_messages).to include("Price must be greater than 0")
+      expect(@item.errors.full_messages).to include("Price must be a valid number")
     end
 
     it "価格の情報が数値でないと商品情報は保存できない" do
       @item.price = "invalid"
       @item.valid?
-      expect(@item.errors.full_messages).to include("Price is not a number")
+      expect(@item.errors.full_messages).to include("Price must be a valid number")
+    end
+    it 'userが紐付いていないと保存できない' do
+      @item.user = nil
+      @item.valid?
+      expect(@item.errors.full_messages).to include('User must exist')
+    end
+    it "価格が半角数値でない場合、商品情報は保存できない" do
+      @item.price = "invalid"
+      @item.valid?
+      expect(@item.errors.full_messages).to include("Price must be a valid number")
     end
     end
   end
