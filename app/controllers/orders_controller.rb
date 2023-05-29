@@ -1,16 +1,16 @@
 class OrdersController < ApplicationController
-  
+  before_action :authenticate_user!
+  before_action :non_purchased_item, only: [:index, :create]
   def index
-    @order = Order.new
+    @order_form = OrderForm.new
   end
 
   def create
-    binding.pry
-    @order = Order.new(order_params)
-    if @order.valid?
+    @order_form = OrderForm.new(order_params)
+    if @order_form.valid?
       pay_item
-      @order.save
-      return redirect_to root_path
+      @order_form.save
+      redirect_to root_path
     else
       render 'index'
     end
@@ -19,7 +19,11 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).merge(token: params[:token])
+    params.require(:order_from).permit(:postcode, :prefecture_id, :city, :block, :building, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
+  end
+
+  def address_params
+    params.permit(:post_code, :region_of_origin_id, :municipality, :address, :building_name, :telephone_number,).merge(order_id: @order.id)
   end
 
   def pay_item
