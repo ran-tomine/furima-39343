@@ -3,6 +3,10 @@ class OrderForm
   # order_idは、保存されたタイミングで生成されるため、attr_accessorにおいて不要なカラムとなる（書くと蛇足なのでエラー）
   attr_accessor :user_id, :item_id, :post_code, :region_of_origin_id, :municipality, :address, :building_name, :telephone_number, :token
 
+  def build_item
+    @item = Item.find(item_id)
+  end
+
   with_options presence: true do
     # orderモデルのバリデーション
     validates :user_id
@@ -15,10 +19,11 @@ class OrderForm
     validates :telephone_number, format: { with: /\A[0-9]{11}\z/, message: 'is invalid' }
     # トークンのバリデーション
     validates :token
+  end
 
     def save
       order = Order.create(user_id: user_id, item_id: item_id)
       # ストロングパラメーターでデータが運ばれ、それらが保存のタイミングで「order_id」が生成され、保存される。
-      Payment.create(order_id: order.id, post_code: post_code, region_of_origin_id: region_of_origin_id, municipality: municipality, address: address, building_name: building_name, telephone_number: telephone_number)
+      Address.create(order_id: order.id, post_code: post_code, region_of_origin_id: region_of_origin_id, municipality: municipality, address: address, building_name: building_name, telephone_number: telephone_number)
     end
 end

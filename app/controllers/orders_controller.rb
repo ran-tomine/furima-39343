@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :non_purchased_item, only: [:index, :create]
+
   def index
     @order_form = OrderForm.new
   end
@@ -8,6 +9,7 @@ class OrdersController < ApplicationController
   def create
     @order_form = OrderForm.new(order_params)
     if @order_form.valid?
+      @order_form.build_item 
       pay_item
       @order_form.save
       redirect_to root_path
@@ -19,20 +21,21 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order_from).permit(:postcode, :prefecture_id, :city, :block, :building, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
-  end
-
-  def address_params
-    params.permit(:post_code, :region_of_origin_id, :municipality, :address, :building_name, :telephone_number,).merge(order_id: @order.id)
+    params.require(:order_form).permit(:post_code, :region_of_origin_id, :municipality, :address, :building_name, :telephone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
   end
 
   def pay_item
-    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # 自身のPAY.JPテスト秘密鍵を記述しましょう
+    Payjp.api_key = "sk_test_9f528c5bc12e36940fc330b3"  # 自身のPAY.JPテスト秘密鍵を記述しましょう
     Payjp::Charge.create(
+      amount: @item.price,        # 商品の値段
       card: order_params[:token],    # カードトークン
       currency: 'jpy'                 # 通貨の種類（日本円）
     )
   end
 
-
+  def non_purchased_item
+    # itemがあっての、order_form（入れ子構造）。他のコントローラーで生成されたitemを使うにはcreateアクションに定義する。
+    @item = Item.find(params[:item_id])
+    redirect_to root_path if current_user.id == @item.user_id || @item.order.present?
+  end
 end
