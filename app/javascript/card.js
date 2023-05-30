@@ -1,5 +1,5 @@
 const pay = () => {
-  const payjp = Payjp('pk_test_f118a3f8188cb677b6ef7789'); // PAY.JPテスト公開鍵
+  const payjp = Payjp(process.env.PAYJP_PUBLIC_KEY); // PAY.JPテスト公開鍵
 
   const elements = payjp.elements();
   const cardNumberElement = elements.create('cardNumber');
@@ -15,10 +15,9 @@ const pay = () => {
 
     payjp.createToken(cardNumberElement).then((result) => {
       if (result.error) {
-        console.log(result.error.message);
+
       } else {
         const token = result.id;
-        console.log(token);
 
         const hiddenInput = document.createElement('input');
         hiddenInput.setAttribute('type', 'hidden');
