@@ -1,8 +1,6 @@
 FactoryBot.define do
   factory :order_form do
-    
-    user_id { 2 }
-    item_id { 2 }
+  
     post_code  { '123-4567' }
     region_of_origin_id {2}
     municipality { '東京都' }

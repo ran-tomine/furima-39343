@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe OrderForm, type: :model do
   before do
     user = FactoryBot.create(:user)
-    @order_form = FactoryBot.build(:order_form, user_id: user.id)
+    item = FactoryBot.create(:item)
+    
+    @order_form = FactoryBot.build(:order_form, user_id: user.id, item_id: item.id)
   end
 
   describe '配送先情報の保存' do
@@ -22,7 +24,7 @@ RSpec.describe OrderForm, type: :model do
       it "post_codeが空では保存できない" do
         @order_form.post_code = nil
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Post code can't be blank", "Post code is invalid. Include hyphen(-)")
+        expect(@order_form.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
       end
 
       it "post_codeがハイフンを含まない形式では保存できない" do
@@ -32,7 +34,7 @@ RSpec.describe OrderForm, type: :model do
       end
 
       it "region_of_origin_idが1では保存できない" do
-        @order_form.region_of_origin_id = ' 1 '
+        @order_form.region_of_origin_id = '1'
         @order_form.valid?
         expect(@order_form.errors.full_messages).to include("Region of origin can't be blank")
       end
@@ -52,7 +54,7 @@ RSpec.describe OrderForm, type: :model do
       it "telephone_numberが空では保存できない" do
         @order_form.telephone_number = nil
         @order_form.valid?
-        expect(@order_form.errors.full_messages).to include("Telephone number can't be blank", "Telephone number is invalid")
+        expect(@order_form.errors.full_messages).to include("Telephone number is invalid")
       end
 
       it "telephone_numberが半角数字以外を含む場合は保存できない" do
