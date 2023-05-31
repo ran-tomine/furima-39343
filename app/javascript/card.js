@@ -1,42 +1,32 @@
 const pay = () => {
-  const payjp = Payjp(process.env.PAYJP_PUBLIC_KEY); // PAY.JPテスト公開鍵
-
+  const payjp = Payjp(process.env.PAYJP_PUBLIC_KEY);// PAY.JPテスト公開鍵
   const elements = payjp.elements();
-  const cardNumberElement = elements.create('cardNumber');
-  const cardExpiryElement = elements.create('cardExpiry');
-  const cardCvcElement = elements.create('cardCvc');
+  const numberElement = elements.create('cardNumber');
+  const expiryElement = elements.create('cardExpiry');
+  const cvcElement = elements.create('cardCvc');
 
-  cardNumberElement.mount('#card-number');
-  cardExpiryElement.mount('#expiry-form');
-  cardCvcElement.mount('#card-cvc');
-  const form = document.getElementById('charge-form');
-  form.addEventListener('submit', (e) => {
+  numberElement.mount('#card-number');
+  expiryElement.mount('#expiry-form');
+  cvcElement.mount('#card-cvc');
+
+
+  const submit = document.getElementById("button");
+  submit.addEventListener("click", (e) => {
     e.preventDefault();
-
-    payjp.createToken(cardNumberElement).then((result) => {
-      if (result.error) {
-
+    payjp.createToken(numberElement).then(function (response) {
+      if (response.error) {
       } else {
-        const token = result.id;
-
-        const hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'token');
-        hiddenInput.setAttribute('value', token);
-        form.appendChild(hiddenInput);
-
-        cardNumberElement.clear();
-        cardExpiryElement.clear();
-        cardCvcElement.clear();
-        document.getElementById("charge-form").submit();
-        
+        const token = response.id;
+        const renderDom = document.getElementById("charge-form");
+        const tokenObj = `<input value=${token} name='token' type="hidden">`;
+        renderDom.insertAdjacentHTML("beforeend", tokenObj);
       }
+      numberElement.clear();
+      expiryElement.clear();
+      cvcElement.clear();
+      document.getElementById("charge-form").submit();
     });
   });
 };
 
-window.addEventListener('load', pay);
-
-
-
-
+window.addEventListener("load", pay);

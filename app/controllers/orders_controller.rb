@@ -9,10 +9,9 @@ class OrdersController < ApplicationController
   def create
     @order_form = OrderForm.new(order_params)
     if @order_form.valid?
-      @order_form.build_item 
       pay_item
       @order_form.save
-      redirect_to root_path
+      return redirect_to root_path
     else
       render 'index'
     end

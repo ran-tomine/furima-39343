@@ -3,9 +3,6 @@ class OrderForm
   # order_idは、保存されたタイミングで生成されるため、attr_accessorにおいて不要なカラムとなる（書くと蛇足なのでエラー）
   attr_accessor :user_id, :item_id, :post_code, :region_of_origin_id, :municipality, :address, :building_name, :telephone_number, :token
 
-  def build_item
-    @item = Item.find(item_id)
-  end
 
   with_options presence: true do
     # orderモデルのバリデーション
