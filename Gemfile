@@ -58,7 +58,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :production do
   gem 'unicorn', '5.4.1'
-  gem 'pg', '1.5.3'
 end
 gem 'devise'
 gem 'mini_magick'
