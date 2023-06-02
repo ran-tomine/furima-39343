@@ -72,4 +72,5 @@ gem 'jp_prefecture'
 gem 'payjp'
 gem 'pry-rails'
 gem "aws-sdk-s3", require: false
-gem 'date', '3.3.3'
+gem 'mail', '2.7.1'
+gem 'date', '~> 3.3', '>= 3.3.3'
