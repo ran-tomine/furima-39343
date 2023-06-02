@@ -360,7 +360,7 @@ DEPENDENCIES
   aws-sdk-s3
   bootsnap (>= 1.4.2)
   byebug
-  capistrano
+  capistrano (~> 3.17.3)
   capistrano-bundler
   capistrano-rails
   capistrano-rbenv
