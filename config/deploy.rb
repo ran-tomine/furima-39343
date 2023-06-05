@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.17.3"
+lock "3.17.3"
 
 set :application, "furima-39343"
 set :repo_url,  'git@github.com:ran-tomine/furima-39343'
